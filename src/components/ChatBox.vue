@@ -20,57 +20,86 @@
         </div>
       </div>
     </div>
-    <form
-      class="flex items-center justify-center px-0 pb-[60px] bg-transparent"
-      @submit.prevent="onSend"
-      style="z-index: 20"
+    <!-- 底部输入区整体容器，始终固定在底部 -->
+    <div
+      class="fixed left-60 right-0 bottom-0 z-20 bg-white border-t border-gray-100 shadow-lg flex flex-col items-center py-3"
+    >
+      <!-- Prompt芯片区 紧贴输入框上方 -->
+      <div class="flex gap-2 w-full max-w-3xl mb-1 px-2">
+        <button
+          v-for="chip in promptChips"
+          :key="chip"
+          @click="input = chip"
+          class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium hover:bg-blue-100 transition whitespace-nowrap cursor-pointer"
+        >
+          {{ chip }}
+        </button>
+      </div>
+      <div class="flex flex-row w-full max-w-3xl items-end gap-3">
+        <!-- 按钮区在输入框外部 -->
+        <div class="flex gap-2 pb-1">
+          <button type="button" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 transition" @click="triggerFileInput">
+            <svg width="20" height="20" fill="none" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#e7e7e9"/><path d="M11 7v8M7 11h8" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/></svg>
+            <input ref="fileInputRef" type="file" class="hidden" @change="onFileChange" />
+          </button>
+          <button type="button" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 transition" @click="showJDInput = true">
+            <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="3" y="5" width="14" height="10" rx="3" fill="#dbeafe"/><rect x="6" y="8" width="8" height="4" rx="1" fill="#2563eb"/></svg>
+          </button>
+          <button type="button" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 transition" @click="analyzeResume">
+            <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#f3f4f6"/><path d="M10 6v4l2 2" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <button type="button" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-blue-50 transition" @click="startNewChat">
+            <svg width="20" height="20" fill="none" viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="12" rx="3" fill="#e0e7ff"/><path d="M10 7v6M7 10h6" stroke="#6366f1" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <form class="flex-1 flex flex-row items-center bg-[#fff] rounded-xl border border-gray-200 shadow-sm px-0" @submit.prevent="onSend">
+          <input
+            v-model="input"
+            :disabled="loading"
+            class="flex-1 bg-transparent border-none outline-none px-2 py-3 text-base text-black placeholder-gray-400"
+            placeholder="有问题，尽管问"
+          />
+          <transition name="fade">
+            <div
+              v-if="loading"
+              class="absolute left-1/2 -translate-x-1/2 bottom-14 flex items-center gap-2 text-gray-500 text-sm bg-white px-4 py-2 rounded shadow border border-gray-200 animate-pulse z-20"
+            >
+              <svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+              </svg>
+              生成中...
+            </div>
+          </transition>
+        </form>
+      </div>
+    </div>
+    <div
+      v-for="(msg, idx) in messages"
+      :key="idx"
+      class="mb-4 flex"
+      :class="msg.role === 'user' ? 'justify-end' : 'justify-start'"
     >
       <div
-        class="relative flex-1 flex items-center bg-[#fff] rounded-xl border border-gray-200 shadow-sm mx-auto w-full max-w-3xl"
+        :class="[
+          'max-w-[75%] px-4 py-2 rounded-2xl',
+          msg.role === 'user'
+            ? 'bg-[#e7e7e9] text-black rounded-br-md'
+            : 'bg-white text-black rounded-bl-md border border-gray-200',
+        ]"
       >
-        <div
-          ref="menuRef"
-          class="absolute left-3 top-1/2 -translate-y-1/2 p-0 m-0 cursor-pointer"
-          style="background: none; border: none; outline: none"
-        >
-          <div @click="toggleMenu">
-            <svg width="22" height="22" fill="none" viewBox="0 0 22 22">
-              <circle cx="11" cy="11" r="10" fill="#e7e7e9" />
-              <path d="M11 7v8M7 11h8" stroke="#444" stroke-width="2" stroke-linecap="round" />
-            </svg>
-          </div>
-          <div v-if="showMenu" class="absolute left-0 bottom-full mb-2 z-30 w-48 bg-white border border-gray-200 rounded-xl shadow-lg p-2 flex flex-col gap-2">
-            <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded px-2 py-1">
-              <input ref="fileInputRef" type="file" class="hidden" @change="onFileChange" />
-              <span @click.stop="triggerFileInput">上传简历</span>
-            </label>
-            <button class="text-left hover:bg-gray-100 rounded px-2 py-1" @click="showJDInput = true; showMenu = false">JD描述</button>
-            <button class="text-left hover:bg-gray-100 rounded px-2 py-1" @click="analyzeResume">简历分析</button>
-          </div>
-        </div>
-        <input
-          v-model="input"
-          :disabled="loading"
-          class="flex-1 bg-transparent border-none outline-none px-10 py-3 text-base text-black placeholder-gray-400"
-          placeholder="有问题，尽管问"
-        />
-        <transition name="fade">
-          <div v-if="loading" class="absolute left-1/2 -translate-x-1/2 bottom-14 flex items-center gap-2 text-gray-500 text-sm bg-white px-4 py-2 rounded shadow border border-gray-200 animate-pulse z-20">
-            <svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
-            生成中...
-          </div>
-        </transition>
+        <span v-if="msg.role === 'user'">{{ msg.text }}</span>
+        <span v-else v-html="msg.text.replace(/\n/g, '<br>')"></span>
       </div>
-    </form>
-    <!-- 已移除UploadDialog弹窗，直接用input[type=file] -->
-    <div v-if="showJDInput" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-30">
-      <div class="bg-white rounded-xl shadow-lg p-6 w-80 flex flex-col gap-4">
-        <div class="font-bold text-lg">输入JD描述</div>
-        <textarea v-model="jdText" rows="4" class="w-full border rounded p-2" placeholder="请输入岗位JD描述"></textarea>
-        <div class="flex gap-2 justify-end">
-          <button class="px-4 py-1 rounded bg-gray-200" @click="showJDInput = false">取消</button>
-          <button class="px-4 py-1 rounded bg-blue-600 text-white" @click="submitJD">确定</button>
-        </div>
+    </div>
+  </div>
+  <div v-if="showJDInput" class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-30">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-80 flex flex-col gap-4">
+      <div class="font-bold text-lg">输入JD描述</div>
+      <textarea v-model="jdText" rows="4" class="w-full border rounded p-2" placeholder="请输入岗位JD描述"></textarea>
+      <div class="flex gap-2 justify-end">
+        <button class="px-4 py-1 rounded bg-gray-200" @click="showJDInput = false">取消</button>
+        <button class="px-4 py-1 rounded bg-blue-600 text-white" @click="submitJD">确定</button>
       </div>
     </div>
   </div>
@@ -91,34 +120,28 @@ const messages = ref<Message[]>([])
 const input = ref('')
 const loading = ref(false)
 const chatContainer = ref<HTMLElement | null>(null)
-const showMenu = ref(false)
 const showJDInput = ref(false)
 const jdText = ref('')
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const menuRef = ref<HTMLElement | null>(null)
+const promptChips = [
+  '如何针对风险点优化简历？',
+  '风险提示会如何解读？',
+  '根据JD生成定制优化建议',
+  '请总结我的技术亮点',
+  '请分析我的AI加分项',
+]
 
-function toggleMenu() {
-  showMenu.value = !showMenu.value
-}
-function triggerFileInput(e: Event) {
-  e.stopPropagation()
+function triggerFileInput() {
   if (fileInputRef.value) fileInputRef.value.click()
 }
-function handleClickOutside(e: MouseEvent) {
-  if (showMenu.value && menuRef.value && !menuRef.value.contains(e.target as Node)) {
-    showMenu.value = false
-  }
-}
-onMounted(() => {
-  document.addEventListener('mousedown', handleClickOutside)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('mousedown', handleClickOutside)
-})
 function submitJD() {
   if (!jdText.value.trim()) return
   input.value = jdText.value
   showJDInput.value = false
+}
+function startNewChat() {
+  messages.value = []
+  input.value = ''
 }
 async function analyzeResume() {
   showMenu.value = false
@@ -140,7 +163,8 @@ async function analyzeResume() {
     if (eva.decision) msg += `【评估结论】${eva.decision}\n`
     if (eva.match_score !== undefined) msg += `【匹配分数】${eva.match_score}\n`
     if (eva.tech_stack && eva.tech_stack.length) msg += `【技术栈】${eva.tech_stack.join('，')}\n`
-    if (eva.key_achievements && eva.key_achievements.length) msg += `【关键成就】\n- ` + eva.key_achievements.join('\n- ') + '\n'
+    if (eva.key_achievements && eva.key_achievements.length)
+      msg += `【关键成就】\n- ` + eva.key_achievements.join('\n- ') + '\n'
     if (eva.ai_bonus) msg += `【AI加分项】${eva.ai_bonus}\n`
     if (eva.risks && eva.risks.length) msg += `【风险提示】\n- ` + eva.risks.join('\n- ') + '\n'
     messages.value.push({ user_id: 'lyl', role: 'ai', text: msg })
