@@ -1,34 +1,33 @@
-// resume-agent 前后端接口定义
-// 所有与后端交互的 API 类型和方法
+import type {
+  ChatRequest,
+  EvaluateResumeRequest,
+  JobDescriptionAnalysisRequest,
+  JobDescriptionAnalysisResponse,
+  OCRResponse,
+  ResumeListResponse,
+  UploadResumeForm,
+  UploadResumeResponse,
+} from './types/resume-agent'
 
-// 上传简历请求参数（表单）
-export interface UploadResumeForm {
-  file: File
-  candidate_name: string
-  phone: string
-  user_id: string
+export async function analyzeJobDescription(
+  payload: JobDescriptionAnalysisRequest,
+): Promise<JobDescriptionAnalysisResponse> {
+  const response = await fetch('/api/analyze_jd', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jd_text: payload.text,
+      target_seniority: payload.targetSeniority,
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response.json()
 }
 
-// 上传简历响应结构
-export interface UploadResumeResponse {
-  message: string
-  resume_id: number
-  status: string // "pending" 等
-}
-
-// 聊天请求体
-export interface ChatRequest {
-  user_id: string
-  text: string
-  role: 'user' | 'ai'
-}
-
-// 聊天响应结构
-export interface ChatResponse {
-  reply: string
-}
-
-// 上传简历 API
 export async function uploadResume(form: UploadResumeForm): Promise<UploadResumeResponse> {
   const formData = new FormData()
   formData.append('file', form.file)
@@ -43,11 +42,57 @@ export async function uploadResume(form: UploadResumeForm): Promise<UploadResume
   return resp.json()
 }
 
-// 聊天流式 API（fetch + ReadableStream）
+export async function ocrJobDescriptionImage(file: File): Promise<OCRResponse> {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const response = await fetch('/api/ocr_jd_image', {
+    method: 'POST',
+    body: formData,
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response.json()
+}
+
+export async function fetchResumes(userId: string): Promise<ResumeListResponse> {
+  const response = await fetch(`/api/resumes?user_id=${encodeURIComponent(userId)}`)
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+  return response.json()
+}
+
+export async function deleteResume(resumeId: number, userId: string): Promise<void> {
+  const response = await fetch(`/api/resumes/${resumeId}?user_id=${encodeURIComponent(userId)}`, {
+    method: 'DELETE',
+  })
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+}
+
 export async function chatWithAI(req: ChatRequest): Promise<Response> {
   return fetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req),
   })
+}
+
+export async function evaluateResume(payload: EvaluateResumeRequest): Promise<unknown> {
+  const response = await fetch('/api/evaluate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response.json()
 }
