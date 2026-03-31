@@ -18,15 +18,6 @@ export default {
     field: {
       description: 'Job Description',
     },
-    seniority: {
-      label: 'Target seniority',
-      option: {
-        junior: 'Junior',
-        mid: 'Mid',
-        senior: 'Senior',
-        lead: 'Lead',
-      },
-    },
     placeholder: {
       description: 'Paste the target role description, responsibilities, and must-have signals here...',
     },

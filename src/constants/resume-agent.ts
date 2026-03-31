@@ -1,25 +1,4 @@
-import type { SelectOption, UserContext } from '../types/resume-agent'
-
-export const TARGET_SENIORITY_OPTIONS: SelectOption[] = [
-  {
-    labelKey: 'jd.seniority.option.junior',
-    value: 'junior',
-  },
-  {
-    labelKey: 'jd.seniority.option.mid',
-    value: 'mid',
-  },
-  {
-    labelKey: 'jd.seniority.option.senior',
-    value: 'senior',
-  },
-  {
-    labelKey: 'jd.seniority.option.lead',
-    value: 'lead',
-  },
-]
-
-export const DEFAULT_TARGET_SENIORITY = 'senior'
+import type { UserContext } from '../types/resume-agent'
 
 export const DEFAULT_USER_CONTEXT: UserContext = {
   userId: 'resume-agent-demo',

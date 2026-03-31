@@ -18,15 +18,6 @@ export default {
     field: {
       description: 'Job Description',
     },
-    seniority: {
-      label: '目标级别',
-      option: {
-        junior: 'Junior',
-        mid: 'Mid',
-        senior: 'Senior',
-        lead: 'Lead',
-      },
-    },
     placeholder: {
       description: '粘贴目标岗位的职责描述、能力要求与核心筛选信号...',
     },

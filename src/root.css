@@ -411,8 +411,73 @@ select {
 }
 
 .suggestion-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 100%;
+  min-width: 0;
   cursor: pointer;
   text-align: left;
+  overflow: hidden;
+}
+
+.suggestion-chip-wrap {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.suggestion-chip__label {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestion-chip__tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  z-index: 6;
+  width: max-content;
+  max-width: min(36ch, calc(100vw - 48px));
+  padding: 10px 12px;
+  border: 1px solid rgba(146, 255, 230, 0.22);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(19, 28, 38, 0.96), rgba(10, 16, 24, 0.94));
+  color: #e7fff9;
+  line-height: 1.45;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28), 0 0 24px rgba(0, 255, 204, 0.1);
+  backdrop-filter: blur(18px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 6px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+}
+
+.suggestion-chip__tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid rgba(146, 255, 230, 0.22);
+  border-bottom: 1px solid rgba(146, 255, 230, 0.22);
+  background: rgba(10, 16, 24, 0.96);
+  transform: translate(-50%, -6px) rotate(45deg);
+}
+
+.suggestion-chip-wrap:hover .suggestion-chip__tooltip,
+.suggestion-chip-wrap:focus-within .suggestion-chip__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
 }
 
 .resume-toolbar {
@@ -479,13 +544,23 @@ select {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
+  width: 100%;
 }
 
 .follow-up-input {
+  width: 100%;
+  min-width: 0;
+  padding: 14px 16px;
   border: 1px solid rgba(164, 255, 238, 0.14);
   border-radius: 18px;
   background: rgba(8, 12, 17, 0.84);
   color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.follow-up-composer {
+  display: grid;
+  gap: 12px;
 }
 
 .follow-up-card {
@@ -498,6 +573,10 @@ select {
 .follow-up-thread {
   display: grid;
   gap: 10px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
 }
 
 .follow-up-bubble {
@@ -505,6 +584,8 @@ select {
   padding: 14px 16px;
   border: 1px solid rgba(145, 255, 230, 0.14);
   background: rgba(7, 15, 22, 0.58);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .follow-up-bubble--user {
@@ -529,12 +610,51 @@ select {
   color: var(--text-secondary);
   line-height: 1.6;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .follow-up-card__question {
   margin: 0 0 10px;
   color: #aeffef;
   font-weight: 600;
+}
+
+.suggestion-row--follow-up {
+  width: 100%;
+}
+
+.suggestion-row--follow-up .suggestion-chip-wrap {
+  max-width: 100%;
+}
+
+.suggestion-row--follow-up .suggestion-chip {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .suggestion-row--follow-up .suggestion-chip-wrap {
+    width: 100%;
+  }
+
+  .suggestion-row--follow-up .suggestion-chip {
+    width: 100%;
+  }
+
+  .suggestion-chip__tooltip {
+    left: 0;
+    max-width: min(32ch, calc(100vw - 40px));
+    transform: translateY(6px);
+  }
+
+  .suggestion-chip__tooltip::after {
+    left: 24px;
+    transform: translateY(-6px) rotate(45deg);
+  }
+
+  .suggestion-chip-wrap:hover .suggestion-chip__tooltip,
+  .suggestion-chip-wrap:focus-within .suggestion-chip__tooltip {
+    transform: translateY(0);
+  }
 }
 
 .assessment-panel {

@@ -1,19 +1,8 @@
 <template>
   <GlassPanel :title="t('jd.panel.title')" :eyebrow="t('jd.panel.eyebrow')">
     <div class="stack-16">
-      <div class="field-grid">
-        <div class="stack-8">
-          <label class="field-label" for="target-seniority">{{ t('jd.seniority.label') }}</label>
-          <select id="target-seniority" v-model="targetSeniority" class="input-shell select-shell">
-            <option v-for="option in seniorityOptions" :key="option.value" :value="option.value">
-              {{ t(option.labelKey) }}
-            </option>
-          </select>
-        </div>
-
-        <div class="stack-8">
-          <label class="field-label" for="jd-textarea">{{ t('jd.field.description') }}</label>
-        </div>
+      <div class="stack-8">
+        <label class="field-label" for="jd-textarea">{{ t('jd.field.description') }}</label>
       </div>
 
       <div class="jd-textarea-shell">
@@ -56,7 +45,6 @@
 import { ref } from 'vue'
 
 import { useI18n } from '../composables/useI18n'
-import { TARGET_SENIORITY_OPTIONS } from '../constants/resume-agent'
 import { useWorkbench } from '../composables/useWorkbench'
 import GlassPanel from './GlassPanel.vue'
 import KeywordTicker from './KeywordTicker.vue'
@@ -64,8 +52,7 @@ import LoadingInline from './LoadingInline.vue'
 
 const t = useI18n()
 const imageInputRef = ref<HTMLInputElement | null>(null)
-const seniorityOptions = TARGET_SENIORITY_OPTIONS
-const { jdKeywords, jdText, targetSeniority, analyzeStatus, ocrStatus, analyzeJobDescription, ocrJDImage } = useWorkbench()
+const { jdKeywords, jdText, analyzeStatus, ocrStatus, analyzeJobDescription, ocrJDImage } = useWorkbench()
 
 function openImageDialog() {
   imageInputRef.value?.click()

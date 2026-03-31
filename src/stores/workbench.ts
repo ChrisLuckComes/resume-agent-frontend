@@ -2,7 +2,6 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import {
-  DEFAULT_TARGET_SENIORITY,
   DEFAULT_USER_CONTEXT,
   RESUME_LIMIT,
 } from '../constants/resume-agent'
@@ -38,7 +37,6 @@ let temporaryResumeId = -1
 export const useWorkbenchStore = defineStore('workbench', () => {
   const userContext = ref(DEFAULT_USER_CONTEXT)
   const jdText = ref('')
-  const targetSeniority = ref(DEFAULT_TARGET_SENIORITY)
   const jdKeywords = ref<string[]>([])
   const resumes = ref<ResumeCandidate[]>([])
   const selectedResumeId = ref<number | null>(null)
@@ -91,7 +89,6 @@ export const useWorkbenchStore = defineStore('workbench', () => {
     try {
       const response = await analyzeJobDescriptionRequest({
         text: trimmedText,
-        targetSeniority: targetSeniority.value,
       })
       jdKeywords.value = normalizeKeywords(response)
       analyzeStatus.value = 'success'
@@ -361,7 +358,6 @@ export const useWorkbenchStore = defineStore('workbench', () => {
         phone: candidate.phone,
         jd_text: jdText.value,
         jd_keywords: jdKeywords.value,
-        target_seniority: targetSeniority.value,
       })
       report.value = normalizeAssessmentReport(response, jdKeywords.value, candidate)
       evaluationStatus.value = 'success'
@@ -375,7 +371,6 @@ export const useWorkbenchStore = defineStore('workbench', () => {
   return {
     userContext,
     jdText,
-    targetSeniority,
     jdKeywords,
     resumes,
     selectedResumeId,

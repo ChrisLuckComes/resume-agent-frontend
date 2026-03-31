@@ -9,11 +9,6 @@ export type WorkbenchPhase =
   | 'evaluatingResume'
   | 'completed'
 
-export interface SelectOption {
-  labelKey: string
-  value: string
-}
-
 export interface UserContext {
   userId: string
   phone: string
@@ -21,7 +16,6 @@ export interface UserContext {
 
 export interface JobDescriptionAnalysisRequest {
   text: string
-  targetSeniority?: string
 }
 
 export interface JobDescriptionAnalysisResponse {
@@ -63,7 +57,6 @@ export interface EvaluateResumeRequest {
   candidate_name: string
   phone: string
   jd_text: string
-  target_seniority: string
   jd_keywords?: string[]
 }
 

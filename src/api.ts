@@ -17,7 +17,6 @@ export async function analyzeJobDescription(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       jd_text: payload.text,
-      target_seniority: payload.targetSeniority,
     }),
   })
 
