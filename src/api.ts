@@ -1,6 +1,11 @@
 import type {
   ChatRequest,
   EvaluateResumeRequest,
+  InterviewStartRequest,
+  InterviewHistoryResponse,
+  InterviewSessionDetail,
+  InterviewSubmitRequest,
+  InterviewSubmitResult,
   JobDescriptionAnalysisRequest,
   JobDescriptionAnalysisResponse,
   OCRResponse,
@@ -88,6 +93,84 @@ export async function evaluateResume(payload: EvaluateResumeRequest): Promise<un
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response.json()
+}
+
+export async function evaluateResumeStream(payload: EvaluateResumeRequest): Promise<Response> {
+  const response = await fetch('/api/evaluate_stream', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response
+}
+
+export async function startInterviewStream(payload: InterviewStartRequest): Promise<Response> {
+  const response = await fetch('/api/interview/start_stream', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response
+}
+
+export async function submitInterviewAnswers(payload: InterviewSubmitRequest): Promise<InterviewSubmitResult> {
+  const response = await fetch('/api/interview/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ...payload,
+      answers: payload.answers.map((answer) => ({
+        question_id: answer.questionId,
+        question: answer.question,
+        category: answer.category,
+        answer: answer.answer,
+      })),
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response.json()
+}
+
+export async function fetchInterviewHistory(payload: {
+  user_id: string
+  interview_identity: string
+  resume_id?: number
+}): Promise<InterviewHistoryResponse> {
+  const response = await fetch('/api/interview/history', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+
+  if (!response.ok) {
+    throw new Error(await response.text())
+  }
+
+  return response.json()
+}
+
+export async function fetchInterviewHistoryDetail(sessionId: string, userId: string): Promise<InterviewSessionDetail> {
+  const response = await fetch(`/api/interview/history/${encodeURIComponent(sessionId)}?user_id=${encodeURIComponent(userId)}`)
 
   if (!response.ok) {
     throw new Error(await response.text())

@@ -5,6 +5,14 @@ export const DEFAULT_USER_CONTEXT: UserContext = {
   phone: '13800000000',
 }
 
+export const USER_CONTEXT_STORAGE_KEYS = {
+  userId: 'resume-agent-user-id',
+  phone: 'resume-agent-user-phone',
+} as const
+
+export const SYNTHETIC_PHONE_PREFIX = '13'
+export const SYNTHETIC_PHONE_SUFFIX_LENGTH = 9
+
 export const MATCH_SCORE_THRESHOLDS = {
   strong: 80,
   warning: 60,

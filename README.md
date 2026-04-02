@@ -1,6 +1,6 @@
 # resume-agent-frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Resume Agent frontend built with Vue 3, TypeScript, Vue Router, Tailwind CSS, and Playwright E2E testing.
 
 ## Recommended IDE Setup
 
@@ -26,23 +26,38 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 ## Project Setup
 
 ```sh
-npm install
+pnpm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+pnpm dev
 ```
 
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run build
+pnpm build
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-npm run lint
+pnpm lint
+```
+
+### Install Playwright Browser
+
+```sh
+pnpm test:e2e:install
+```
+
+### Run E2E Tests
+
+```sh
+pnpm test:e2e
+```
+
+The Playwright suite runs against real local services on `http://localhost:5173` and `http://localhost:8000`. Start the backend in `D:\code\resume-agent` with `.venv\Scripts\python.exe server.py`, start the frontend with `pnpm dev`, and make sure the local JD image and resume files used by the spec are available before running `pnpm test:e2e`.
 ```
