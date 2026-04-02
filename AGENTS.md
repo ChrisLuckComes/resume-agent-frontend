@@ -1,3 +1,6 @@
+# 包管理器
+pnpm 
+
 # 技术栈
 Vue3 + TypeScript + Vue Router + Tailwindcss
 

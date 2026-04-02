@@ -10,12 +10,18 @@
         >
           <p class="follow-up-bubble__role">{{ message.role === 'user' ? t('followup.role.user') : t('followup.role.ai') }}</p>
           <p class="follow-up-bubble__text">{{ message.text }}</p>
+          <SourceList
+            v-if="message.role === 'ai'"
+            :title="t('followup.sources.title')"
+            :sources="message.sources"
+          />
         </article>
       </div>
 
       <div v-else-if="lastFollowUp" class="follow-up-card">
         <p class="follow-up-card__question">{{ lastFollowUp.question }}</p>
         <p class="follow-up-card__answer">{{ lastFollowUp.answer }}</p>
+        <SourceList :title="t('followup.sources.title')" :sources="lastFollowUp.sources" />
       </div>
 
       <div class="follow-up-composer">
@@ -58,6 +64,7 @@ import { useI18n } from '../composables/useI18n'
 import { useWorkbench } from '../composables/useWorkbench'
 import GlassPanel from './GlassPanel.vue'
 import LoadingInline from './LoadingInline.vue'
+import SourceList from './SourceList.vue'
 
 const t = useI18n()
 const {

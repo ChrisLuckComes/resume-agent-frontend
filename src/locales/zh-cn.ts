@@ -71,6 +71,9 @@ export default {
       user: '你',
       ai: 'AI',
     },
+    sources: {
+      title: '回答依据',
+    },
     suggestion: {
       alignment: '这位候选人与 React 和 TypeScript 要求的契合度如何？',
       seniorityGap: '这位候选人与目标级别之间最大的差距是什么？',
@@ -94,6 +97,20 @@ export default {
       summary: 'Summary',
       highlights: 'Highlights',
       risks: 'Risks',
+    },
+    sources: {
+      title: '证据来源',
+    },
+    phase: {
+      idle: '等待开始',
+      preparing: '正在准备评估上下文',
+      sources: '正在整理证据来源',
+      scoring: '正在计算匹配分',
+      radar: '正在生成能力雷达',
+      summary: '正在生成评估总结',
+      highlights: '正在提炼候选人亮点',
+      risks: '正在识别风险点',
+      finalizing: '正在组装最终报告',
     },
     empty: {
       title: '请先分析 JD 并选择一份简历。',
@@ -174,6 +191,66 @@ export default {
         limitedEvidence: '{keyword} 在当前简历中的证据不足，尚未达到目标要求。',
         ownership: '简历中还缺少对级别与业务 owner 能力的有力证明。',
       },
+    },
+  },
+  interview: {
+    button: {
+      open: '开始模拟面试',
+      submit: '提交完整答案',
+      submitting: '评分中...',
+      startVoice: '语音输入',
+      stopVoice: '停止录音',
+    },
+    modal: {
+      eyebrow: 'AI 模拟面试',
+      title: '模拟面试',
+      subtitle: '候选人：{name}',
+      intro: '系统会基于当前 JD、简历和评估结果生成 10 道真实面试问题，请完成全部回答后统一提交评分。',
+    },
+    identity: {
+      label: '临时面试身份',
+      placeholder: '例如：xiaolin-demo / 面试练习-0421',
+      confirm: '确认身份',
+      hint: '建议使用你自己的临时标识。后续查询模拟面试记录时，会以这个身份作为主要检索条件。',
+      current: '当前身份：{identity}',
+    },
+    history: {
+      title: '历史模拟记录',
+      viewDetail: '查看详情',
+      detailTitle: '历史记录详情',
+    },
+    phase: {
+      idle: '等待开始',
+      preparing: '正在准备面试上下文',
+      generating: '正在生成模拟面试问题',
+    },
+    category: {
+      technical_depth: '技术深挖',
+      ownership: '项目与 Ownership',
+      problem_solving: '问题解决',
+      communication: '沟通协作',
+      risk_check: '风险确认',
+    },
+    placeholder: {
+      answer: '请输入你的回答，或点击语音输入开始口述...',
+    },
+    voiceStatus: {
+      listening: '正在录音...',
+      recognizing: '正在识别中文语音...',
+      denied: '麦克风权限被拒绝',
+      unsupported: '当前浏览器不支持语音识别',
+      error: '语音识别失败，请重试',
+    },
+    verdict: {
+      passed: '通过',
+      pending: '待定',
+      rejected: '不通过',
+    },
+    error: {
+      loadFailed: '模拟面试问题加载失败。',
+      submitFailed: '模拟面试评分失败。',
+      completeAllAnswers: '请先完成全部 10 道题的回答。',
+      identityRequired: '请先输入并确认临时面试身份。',
     },
   },
   workbench: {

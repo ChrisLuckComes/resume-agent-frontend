@@ -71,6 +71,9 @@ export default {
       user: 'You',
       ai: 'AI',
     },
+    sources: {
+      title: 'Answer Evidence',
+    },
     suggestion: {
       alignment: 'How does this candidate align with the React and TypeScript requirements?',
       seniorityGap: 'Where is the biggest seniority gap for this candidate?',
@@ -94,6 +97,20 @@ export default {
       summary: 'Summary',
       highlights: 'Highlights',
       risks: 'Risks',
+    },
+    sources: {
+      title: 'Evidence Sources',
+    },
+    phase: {
+      idle: 'Waiting to start',
+      preparing: 'Preparing evaluation context',
+      sources: 'Collecting evidence sources',
+      scoring: 'Calculating match score',
+      radar: 'Building capability radar',
+      summary: 'Writing evaluation summary',
+      highlights: 'Extracting candidate highlights',
+      risks: 'Identifying risk signals',
+      finalizing: 'Assembling final report',
     },
     empty: {
       title: 'Please analyze the JD and select a resume.',
@@ -174,6 +191,66 @@ export default {
         limitedEvidence: 'Limited evidence for {keyword} at the requested scope.',
         ownership: 'Seniority and ownership level need stronger proof in the resume.',
       },
+    },
+  },
+  interview: {
+    button: {
+      open: 'Start Mock Interview',
+      submit: 'Submit All Answers',
+      submitting: 'Scoring...',
+      startVoice: 'Voice Input',
+      stopVoice: 'Stop Recording',
+    },
+    modal: {
+      eyebrow: 'AI Mock Interview',
+      title: 'Mock Interview',
+      subtitle: 'Candidate: {name}',
+      intro: 'The system generates 10 interview questions from the current JD, resume, and assessment. Complete all answers before submitting for scoring.',
+    },
+    identity: {
+      label: 'Temporary Interview Identity',
+      placeholder: 'Example: xiaolin-demo / practice-0421',
+      confirm: 'Confirm Identity',
+      hint: 'Use your own temporary identifier. Interview history will be queried primarily by this identity.',
+      current: 'Current identity: {identity}',
+    },
+    history: {
+      title: 'Interview History',
+      viewDetail: 'View Detail',
+      detailTitle: 'History Detail',
+    },
+    phase: {
+      idle: 'Waiting to start',
+      preparing: 'Preparing interview context',
+      generating: 'Generating mock interview questions',
+    },
+    category: {
+      technical_depth: 'Technical Depth',
+      ownership: 'Ownership',
+      problem_solving: 'Problem Solving',
+      communication: 'Communication',
+      risk_check: 'Risk Check',
+    },
+    placeholder: {
+      answer: 'Type your answer, or use voice input to speak your response...',
+    },
+    voiceStatus: {
+      listening: 'Listening...',
+      recognizing: 'Recognizing Chinese speech...',
+      denied: 'Microphone access denied',
+      unsupported: 'Speech recognition is not supported in this browser',
+      error: 'Speech recognition failed, please try again',
+    },
+    verdict: {
+      passed: 'Passed',
+      pending: 'Pending',
+      rejected: 'Rejected',
+    },
+    error: {
+      loadFailed: 'Failed to load mock interview questions.',
+      submitFailed: 'Failed to score the mock interview.',
+      completeAllAnswers: 'Please complete all 10 answers before submitting.',
+      identityRequired: 'Please enter and confirm a temporary interview identity first.',
     },
   },
   workbench: {
