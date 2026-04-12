@@ -9,6 +9,33 @@ export default {
       zhCN: '简体中文',
       enUS: 'English',
     },
+    nav: {
+      workbench: 'Workbench',
+      playground: 'Prompt Playground',
+      observability: 'Observability',
+    },
+  },
+  observability: {
+    panel: {
+      title: 'Model Observability',
+      eyebrow: 'Metrics and request traces',
+    },
+    button: {
+      refresh: 'Refresh data',
+      loading: 'Loading...',
+    },
+  },
+  playground: {
+    panel: {
+      title: 'Prompt Playground',
+      eyebrow: 'Prompt debugging and version save',
+    },
+    button: {
+      run: 'Run Prompt',
+      running: 'Running...',
+      saveVersion: 'Save Version',
+      saving: 'Saving...',
+    },
   },
   jd: {
     panel: {

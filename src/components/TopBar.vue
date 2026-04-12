@@ -3,6 +3,11 @@
     <div>
       <div class="brand-mark">{{ t('topbar.brand.name') }}</div>
       <p class="brand-caption">{{ t('topbar.brand.caption') }}</p>
+      <nav class="top-nav">
+        <RouterLink class="top-nav__link" to="/">{{ t('topbar.nav.workbench') }}</RouterLink>
+        <RouterLink class="top-nav__link" to="/prompt-playground">{{ t('topbar.nav.playground') }}</RouterLink>
+        <RouterLink class="top-nav__link" to="/observability">{{ t('topbar.nav.observability') }}</RouterLink>
+      </nav>
     </div>
     <div class="profile-pill">
       <label class="locale-switcher">
@@ -19,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
+
 import { useI18n } from '../composables/useI18n'
 import { useLocale } from '../composables/useLocale'
 import type { AppLocale } from '../i18n'

@@ -9,6 +9,33 @@ export default {
       zhCN: '简体中文',
       enUS: 'English',
     },
+    nav: {
+      workbench: '工作台',
+      playground: 'Prompt Playground',
+      observability: '观测台',
+    },
+  },
+  observability: {
+    panel: {
+      title: 'Model Observability',
+      eyebrow: '调用指标与日志',
+    },
+    button: {
+      refresh: '刷新数据',
+      loading: '加载中...',
+    },
+  },
+  playground: {
+    panel: {
+      title: 'Prompt Playground',
+      eyebrow: 'Prompt 调试与版本保存',
+    },
+    button: {
+      run: '运行 Prompt',
+      running: '运行中...',
+      saveVersion: '保存版本',
+      saving: '保存中...',
+    },
   },
   jd: {
     panel: {

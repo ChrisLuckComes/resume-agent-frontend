@@ -1,7 +1,7 @@
 <template>
-  <WorkbenchDashboard />
+  <RouterView />
 </template>
 
 <script setup lang="ts">
-import WorkbenchDashboard from './components/WorkbenchDashboard.vue'
+import { RouterView } from 'vue-router'
 </script>

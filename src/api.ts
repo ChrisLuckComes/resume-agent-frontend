@@ -13,6 +13,7 @@ import type {
   UploadResumeForm,
   UploadResumeResponse,
 } from './types/resume-agent'
+import { ensureOk, parseJsonResponse } from './api/request'
 
 export async function analyzeJobDescription(
   payload: JobDescriptionAnalysisRequest,
@@ -25,11 +26,7 @@ export async function analyzeJobDescription(
     }),
   })
 
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response.json()
+  return parseJsonResponse<JobDescriptionAnalysisResponse>(response)
 }
 
 export async function uploadResume(form: UploadResumeForm): Promise<UploadResumeResponse> {
@@ -42,8 +39,7 @@ export async function uploadResume(form: UploadResumeForm): Promise<UploadResume
     method: 'POST',
     body: formData,
   })
-  if (!resp.ok) throw new Error(await resp.text())
-  return resp.json()
+  return parseJsonResponse<UploadResumeResponse>(resp)
 }
 
 export async function ocrJobDescriptionImage(file: File): Promise<OCRResponse> {
@@ -54,29 +50,19 @@ export async function ocrJobDescriptionImage(file: File): Promise<OCRResponse> {
     method: 'POST',
     body: formData,
   })
-
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response.json()
+  return parseJsonResponse<OCRResponse>(response)
 }
 
 export async function fetchResumes(userId: string): Promise<ResumeListResponse> {
   const response = await fetch(`/api/resumes?user_id=${encodeURIComponent(userId)}`)
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-  return response.json()
+  return parseJsonResponse<ResumeListResponse>(response)
 }
 
 export async function deleteResume(resumeId: number, userId: string): Promise<void> {
   const response = await fetch(`/api/resumes/${resumeId}?user_id=${encodeURIComponent(userId)}`, {
     method: 'DELETE',
   })
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
+  await ensureOk(response)
 }
 
 export async function chatWithAI(req: ChatRequest): Promise<Response> {
@@ -94,11 +80,7 @@ export async function evaluateResume(payload: EvaluateResumeRequest): Promise<un
     body: JSON.stringify(payload),
   })
 
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response.json()
+  return parseJsonResponse<unknown>(response)
 }
 
 export async function evaluateResumeStream(payload: EvaluateResumeRequest): Promise<Response> {
@@ -108,11 +90,7 @@ export async function evaluateResumeStream(payload: EvaluateResumeRequest): Prom
     body: JSON.stringify(payload),
   })
 
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response
+  return ensureOk(response)
 }
 
 export async function startInterviewStream(payload: InterviewStartRequest): Promise<Response> {
@@ -122,11 +100,7 @@ export async function startInterviewStream(payload: InterviewStartRequest): Prom
     body: JSON.stringify(payload),
   })
 
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response
+  return ensureOk(response)
 }
 
 export async function submitInterviewAnswers(payload: InterviewSubmitRequest): Promise<InterviewSubmitResult> {
@@ -144,11 +118,7 @@ export async function submitInterviewAnswers(payload: InterviewSubmitRequest): P
     }),
   })
 
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response.json()
+  return parseJsonResponse<InterviewSubmitResult>(response)
 }
 
 export async function fetchInterviewHistory(payload: {
@@ -162,19 +132,10 @@ export async function fetchInterviewHistory(payload: {
     body: JSON.stringify(payload),
   })
 
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response.json()
+  return parseJsonResponse<InterviewHistoryResponse>(response)
 }
 
 export async function fetchInterviewHistoryDetail(sessionId: string, userId: string): Promise<InterviewSessionDetail> {
   const response = await fetch(`/api/interview/history/${encodeURIComponent(sessionId)}?user_id=${encodeURIComponent(userId)}`)
-
-  if (!response.ok) {
-    throw new Error(await response.text())
-  }
-
-  return response.json()
+  return parseJsonResponse<InterviewSessionDetail>(response)
 }
